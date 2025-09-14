@@ -1,127 +1,83 @@
-#include<iostream>
-#include<string>
-#include<vector>
+#include <iostream>
 using namespace std;
 
-int main(){
+int arr[100], size_array = 0;
 
-    int n = 0;
-    int m = 0;
-    vector <int> v;
+void createArray() {
+    cout << "Enter size: ";
+    cin >> size_array;
+  
+    for (int i = 0; i < size_array; i++) {
+        
+          cout << "Enter element "<< i+1<<" : ";
+        cin >> arr[i];
 
-    int t = 1;
-    while(t==1){
+    }
+}
 
-        cout<<"enter the operation you want to perform : "<<endl;
-        string o;
-        cin>>o;
+void displayArray() {
+    for (int i = 0; i < size_array; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << "\n";
+}
 
-        if (o=="create")
-        {
-            cout<<"enter the size of array you want : ";
-            cin>>n;
-            v.resize(n);
-            cout<<"enter the elements you want to enter in array : ";
-            cin>>m;
-            for (int i = 0; i < m; i++)
-            {
-                cout<<"enter the element "<<i+1<<" of the array :";
-                cin>>v[i];
-            }
-        }
-        else if (o=="display")
-        {
-            for (int i = 0; i < m; i++)
-            {
-                cout<<"the element "<<i+1<<" of the array is : "<<v[i]<<endl;
-            }
-        }
-        else if (o == "insert")
-        {
+void insertElement() {
+    int pos, value;
+    cout << "Enter position and value: ";
+    cin >> pos >> value;
+    if (pos < 1 || pos > size_array + 1) {
+        cout << "Invalid position\n";
+        return;
+    }
+    for (int i = size_array; i >= pos; i--) {
+        arr[i] = arr[i - 1];
+    }
+    arr[pos - 1] = value;
+    size_array++;
+}
 
-            if (m == n) {
-                cout << "Array full! Resizing..." << endl;
-                n++;
-                v.resize(n);
-            }
+void deleteElement() {
+    int pos;
+    cout << "Enter position to delete: ";
+    cin >> pos;
+    if (pos < 1 || pos > size_array) {
+        cout << "Invalid position\n";
+        return;
+    }
+    for (int i = pos - 1; i < size_array - 1; i++) {
+        arr[i] = arr[i + 1];
+    }
+    size_array--;
+}
 
-            cout<<"enter the element you want to insert : ";
-            int x , y ;
-            cin>>x;
-            cout<<"enter the index you want to add element to : ";
-            cin>>y;
-
-            if (y < 0 || y > m) {
-                cout << "Invalid index!" << endl;
-                continue;
-            }
-
-            for (int i = m; i >= y; i--)
-            {
-                v[i+1]=v[i];
-            }
-            v[y]=x;
-            m++;
-            cout<<"the new updated array is : "<<endl;
-            for (int i = 0; i < m ; i++)
-            {
-                cout<<"the element "<<i+1<<" of the array is : "<<v[i]<<endl;
-            }
-            
-        }
-        else if (o == "delete")
-        {
-            cout<<"enter the element index you want to delete : ";
-            int z;
-            cin>>z;
-
-             if (z < 0 || z >= m) {
-                cout << "Invalid index!" << endl;
-                continue;
-
-
-            for (int i = z; i < m; i++)
-            {
-                v[i]=v[i+1];
-            }
-            m--;
-
-            cout<<"the new updated array is : "<<endl;
-            for (int i = 0; i < m ; i++)
-            {
-                cout<<"the element "<<i+1<<" of the array is : "<<v[i]<<endl;
-            }
+void linearSearch() {
+    int key, found = 0;
+    cout << "Enter value to search: ";
+    cin >> key;
+    for (int i = 0; i < size_array; i++) {
+        if (arr[i] == key) {
+            cout << "Found at position " << i + 1 << "\n";
+            found = 1;
         }
     }
-        else if (o == "search")
-        {
-            cout<<"enter the element you want to find : ";
-            int s;
-            cin>>s;
-            int f = 0; 
-            for (int i = 0; i < m; i++)
-            {
-                if (v[i]==s)
-                {
-                    cout<<"the element you want to find is at index : "<<i<<endl;
-                    f=1;
-                    break;
-                }
-                else{
-                    continue;
-                }
-            }
-            if (f==0)
-            {
-                cout<<"the element you want to find is not in array "<<endl;
-            }
-        }
-        else if (o=="exit")
-        {
-            t=0;
-            break;
-        }
-    }
+    if (found=0) cout << "Not found\n";
+}
 
-    return 0 ;
+int main() {
+    int choice;
+    do {
+        cout << "\n1. Create\n2. Display\n3. Insert\n4. Delete\n5. Search\n6. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+        switch (choice) {
+            case 1: createArray(); break;
+            case 2: displayArray(); break;
+            case 3: insertElement(); break;
+            case 4: deleteElement(); break;
+            case 5: linearSearch(); break;
+            case 6: cout << "Exiting...\n"; break;
+            default: cout << "Invalid choice\n";
+        }
+    } while (choice != 6);
 }
